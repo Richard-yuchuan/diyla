@@ -87,7 +87,7 @@
             </div>
         </div>
     <%
-        }}
+        } else {endIndex++; continue;}}
     %>
         </div>
     <div id="page" class="pagination">

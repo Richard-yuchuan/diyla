@@ -130,8 +130,8 @@
                 <div class="form-group">
                     <label for="courseName">課程名稱</label><br>
                     <input type="text" id="courseName" class="form-control" name="courseName" placeholder="請輸入中文20字內的名稱" required>
-                    <span class="error-stringlimit" style="display: none">課程名字不可超過20個字。</span>
-                    <span class="error-invalidsymbol" style="display: none">課程名字只允許中文字。</span>
+                    <span class="error-stringlimit" style="display: none; color: red;">課程名字不可超過20個字。</span>
+                    <span class="error-invalidsymbol" style="display: none; color: red;">課程名字只允許中文字。</span>
                 </div>
             </div>
         </div>
@@ -147,7 +147,7 @@
             <label for="courseSeq">課程場次</label><br>
             <select id="courseSeq" class="form-control" name="courseSeq" style="">
                 <option value="0">早上</option>
-                <option value="1">中午</option>
+                <option value="1">下午</option>
                 <option value="2">晚上</option>
             </select>
         </div>
