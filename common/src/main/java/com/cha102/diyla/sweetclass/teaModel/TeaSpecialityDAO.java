@@ -1,16 +1,10 @@
 package com.cha102.diyla.sweetclass.teaModel;
 
+import com.cha102.diyla.sweetclass.core.dao.CoreDao;
+
 import java.util.List;
 
-public interface TeaSpecialityDAO {
-    void insert(TeaSpecialityVO teaSpecialityVO);
+public interface TeaSpecialityDAO extends CoreDao<TeaSpeciality, Integer> {
 
-    void update(TeaSpecialityVO teaSpecialityVO);
-
-    void delete(Integer teaID);
-
-    List<Integer> findByTeaId(Integer teaID);
-
-    List<TeaSpecialityVO> getAll();
-
+    List<Integer> selectByTeaId(Integer teaId);
 }
