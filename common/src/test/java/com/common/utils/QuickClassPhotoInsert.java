@@ -14,7 +14,7 @@ public class QuickClassPhotoInsert {
     public static void main(String[] args) throws IOException {
         String URL = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei&useSSL=false&allowPublicKeyRetrieval=true";
         String USER = "root";
-        String PASSWORD = "123456";
+        String PASSWORD = "1234";
         String INSERT_PHOTO = "UPDATE CLASS SET CLASS_PIC = ? WHERE CLASS_ID = ? ;";
 
         for (int i = 1; i <= 12; i++) {

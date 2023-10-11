@@ -13,7 +13,7 @@ public class ArtPhotoInsert {
     public static void main(String[] args) throws IOException {
         String URL = "jdbc:mysql://localhost:3306/diyla?serverTimezone=Asia/Taipei&useSSL=false";
         String USER = "root";
-        String PASSWORD = "123456";
+        String PASSWORD = "1234";
 
         for (int i = 1; i <= 2; i++) {
             File file = new File("C:/Image/1 (" + i + ").jpg");
