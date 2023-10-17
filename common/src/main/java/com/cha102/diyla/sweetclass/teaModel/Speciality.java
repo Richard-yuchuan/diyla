@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Repository
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "SPECIALITY")

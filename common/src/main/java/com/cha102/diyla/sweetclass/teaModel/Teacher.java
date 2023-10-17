@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Repository
 @Setter
 @Getter
 @NoArgsConstructor

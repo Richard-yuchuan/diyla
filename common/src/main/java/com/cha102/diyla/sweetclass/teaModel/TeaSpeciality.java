@@ -15,7 +15,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Repository
 @Table(name = "tea_speciality")
 public class TeaSpeciality extends Core {
 
