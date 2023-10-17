@@ -1,5 +1,6 @@
 package com.cha102.diyla.back.controller.desertcourse.teacher.controller;
 
+import com.cha102.diyla.sweetclass.teaModel.Teacher;
 import com.cha102.diyla.sweetclass.teaModel.TeacherService;
 import com.cha102.diyla.sweetclass.teaModel.TeacherVO;
 import org.json.JSONObject;
@@ -32,7 +33,7 @@ public class UpdateTeacherServlet extends HttpServlet {
         HttpSession session = req.getSession();
         // EmpVO empVO = (EmpVO)session.getAttribute("empVO");
         //宣告會用到的Teacher相關Service和變數
-        TeacherVO updatedTeacherVO = new TeacherVO();
+        Teacher updatedTeacher = new Teacher();
         TeacherService teacherService = new TeacherService();
         Integer modifyTeacherId = Integer.parseInt(req.getParameter("teacherId"));
         Integer updateCode = null;

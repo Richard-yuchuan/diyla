@@ -15,10 +15,11 @@ import javax.persistence.*;
 @Repository
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "SPECIALITY")
 public class Speciality extends Core {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(insertable = false)
+    @Column(name = "SPE_ID")
     private int speId;
     @Column(name = "SPE_NAME")
     private String speName;

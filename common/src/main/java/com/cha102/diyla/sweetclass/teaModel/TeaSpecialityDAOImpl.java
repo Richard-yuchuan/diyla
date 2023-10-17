@@ -41,7 +41,7 @@ public class TeaSpecialityDAOImpl implements TeaSpecialityDAO {
     }
     @Override
     public List<Integer> selectByTeaId(Integer teaId) {
-        final String hql = "FROM TeaSpeciality WHERE tea_Id = :teaId";
+        final String hql = "SELECT tesp.speciality.speName FROM TeaSpeciality tesp WHERE tesp.tea.teaId = :teaId";
         List<TeaSpeciality> resultList = session.createQuery(hql, TeaSpeciality.class).setParameter("teaId", teaId).getResultList();
         List<Integer> teaSpeIdList = new ArrayList<>();
         for(TeaSpeciality teaSpeciality : resultList) {

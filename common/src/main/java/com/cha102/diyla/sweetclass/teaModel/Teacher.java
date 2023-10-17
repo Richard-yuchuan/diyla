@@ -16,10 +16,12 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "TEACHER")
 public class Teacher extends Core {
     private static final long serialVersionUID = -7667717749228046818L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TEA_ID")
     private int teaId;
     @Column(name = "EMP_ID")
     private int empId;

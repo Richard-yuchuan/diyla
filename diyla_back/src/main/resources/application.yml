@@ -1,5 +1,12 @@
+# DataSource configuration
 spring:
-  mvc:
-    view:
-      prefix: /
-      suffix:
+  datasource:
+    url: jdbc:mysql://localhost:3306/diyla
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # HikariCP specific configuration
+  datasource.hikari:
+    maximum-pool-size: 10
+    idle-timeout: 30000

@@ -1,77 +1,78 @@
 package com.cha102.diyla.sweetclass.teaModel;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.persistence.PersistenceContext;
 import java.util.*;
 
 public class TeacherService {
-    private SpecialityDAO speDAO;
-    private TeaSpecialityDAO teaSpeDAO;
-    private TeacherDAO teaDAO;
 
-    public TeacherService() {
-        teaDAO = new TeacherDAOImpl();
-        speDAO = new SpecialityDAOImpl();
-        teaSpeDAO = new TeaSpecialityDAOImpl();
-    }
+    @Autowired
+    private SpecialityDAOImpl speDAO;
+    @Autowired
+    private TeaSpecialityDAOImpl teaSpeDAO;
+    @Autowired
+    private TeacherDAOImpl teaDAO;
+
 
     public int addTeacher(Integer empID, String teaName, Integer teaGender, String teaPhone,
                                 String teaIntro, byte[] teaPic, String teaEmail, int teaStatus){
-        TeacherVO teacherVO = new TeacherVO();
-        teacherVO.setEmpId(empID);
-        teacherVO.setTeaName(teaName);
-        teacherVO.setTeaGender(teaGender);
-        teacherVO.setTeaPhone(teaPhone);
-        teacherVO.setTeaIntro(teaIntro);
-        teacherVO.setTeaPic(teaPic);
-        teacherVO.setTeaEmail(teaEmail);
-        teacherVO.setTeaStatus(teaStatus);
-        int pk = teaDAO.insert(teacherVO);
+        Teacher teacher = new Teacher();
+        teacher.setEmpId(empID);
+        teacher.setTeaName(teaName);
+        teacher.setTeaGender(teaGender);
+        teacher.setTeaPhone(teaPhone);
+        teacher.setTeaIntro(teaIntro);
+        teacher.setTeaPic(teaPic);
+        teacher.setTeaEmail(teaEmail);
+        teacher.setTeaStatus(teaStatus);
+        int result = teaDAO.insert(teacher);
 
-        return pk;
+        return result;
     }
-    public TeacherVO updateTeacher(Integer teaID, Integer empID, String teaName, Integer teaGender, String teaPhone,
+    public Teacher updateTeacher(Integer teaID, Integer empID, String teaName, Integer teaGender, String teaPhone,
                                    String teaIntro, byte[] teaPic, String teaEmail, int teaStatus){
-        TeacherVO teacherVO = new TeacherVO();
-        teacherVO.setTeaId(teaID);
-        teacherVO.setEmpId(empID);
-        teacherVO.setTeaName(teaName);
-        teacherVO.setTeaGender(teaGender);
-        teacherVO.setTeaPhone(teaPhone);
-        teacherVO.setTeaIntro(teaIntro);
-        teacherVO.setTeaPic(teaPic);
-        teacherVO.setTeaEmail(teaEmail);
-        teacherVO.setTeaStatus(teaStatus);
-        teaDAO.update(teacherVO);
+        Teacher teacher = new Teacher();
+        teacher.setTeaId(teaID);
+        teacher.setEmpId(empID);
+        teacher.setTeaName(teaName);
+        teacher.setTeaGender(teaGender);
+        teacher.setTeaPhone(teaPhone);
+        teacher.setTeaIntro(teaIntro);
+        teacher.setTeaPic(teaPic);
+        teacher.setTeaEmail(teaEmail);
+        teacher.setTeaStatus(teaStatus);
+        teaDAO.update(teacher);
 
-        return teacherVO;
+        return teacher;
     }
 
     public void delTeacher(Integer teaID){
-
-        teaDAO.delete(teaID);
+        teaDAO.deleteById(teaID);
     }
-    public TeacherVO getOneTeacher(Integer teaID) {
-
-        return teaDAO.findByPrimaryKey(teaID);
+    public Teacher getOneTeacher(Integer teaID) {
+        return teaDAO.selectById(teaID);
     }
-    public TeacherVO getOneTeacherByEmpId (Integer empID) {
+    public Teacher getOneTeacherByEmpId (Integer empID) {
         return teaDAO.findTeaByEmpID(empID);
     }
     public boolean verifyTeacherId(Integer teaID) {
         try{
-            teaDAO.findByPrimaryKey(teaID);
+            teaDAO.selectById(teaID);
             return true;
         } catch (RuntimeException re) {
             return false;
         }
     }
 
-    public List<TeacherVO> getAllTeacher(){
+    public List<Teacher> getAllTeacher(){
 
-        return teaDAO.getAll();
+        return teaDAO.selectAll();
     }
     public boolean isEmpAlreadyTeacher(Integer empId) {
-        List<TeacherVO> allTeacher = teaDAO.getAll();
+        List<Teacher> allTeacher = teaDAO.selectAll();
         boolean result = false;
-        for(TeacherVO teacher: allTeacher) {
+        for(Teacher teacher: allTeacher) {
             if (empId == teacher.getEmpId()) {
                 result = true;
             }
@@ -79,38 +80,44 @@ public class TeacherService {
         return result;
     }
     public boolean updateTeaStatus(Integer teaId, Integer status){
-        TeacherVO teacherVO = teaDAO.findByPrimaryKey(teaId);
-        teacherVO.setTeaStatus(status);
+        Teacher teacher = teaDAO.selectById(teaId);
+        teacher.setTeaStatus(status);
         try {
-            teaDAO.update(teacherVO);
+            teaDAO.update(teacher);
             return true;
         } catch (RuntimeException re) {
             re.printStackTrace();
             return false;
         }
     }
-    public SpecialityVO addSpeciality(String speName) throws RuntimeException{
-        SpecialityVO specialityVO = new SpecialityVO();
-        specialityVO.setSpeName(speName);
-        speDAO.insert(specialityVO);
-        return specialityVO;
+    public Speciality addSpeciality(String speName) throws RuntimeException{
+        Speciality speciality = new Speciality();
+        speciality.setSpeName(speName);
+        speDAO.insert(speciality);
+        return speciality;
     }
-    public SpecialityVO updateSpeciality(String speName){
-        SpecialityVO specialityVO = new SpecialityVO();
-        specialityVO.setSpeName(speName);
-        speDAO.update(specialityVO);
-        return specialityVO;
+    public Speciality updateSpeciality(String speName){
+        Speciality speciality = new Speciality();
+        speciality.setSpeName(speName);
+        speDAO.update(speciality);
+        return speciality;
     }
     public void delSpeciality(Integer speID) {
-        speDAO.delete(speID);
+        speDAO.deleteById(speID);
     }
 
     public Integer getOneSpecialityID(String speName) {
-        return speDAO.findBySpeName(speName);
+        return speDAO.findBySpeName(speName).getSpeId();
     }
     public String getTeacherSpecialityString(Integer teaID){
-        TeacherDAO teacherDAO = new TeacherDAOImpl();
-        List<String> teacherSpecialities = teacherDAO.getTeacherSpeciality(teaID);
+        List<Speciality> speList = speDAO.selectAll();
+        List<Integer> teaSpeIDList = teaSpeDAO.selectByTeaId(teaID);
+        List<String> teacherSpecialities = new ArrayList<>();
+        for(Speciality spe: speList) {
+            if(teaSpeIDList.contains(spe.getSpeId())) {
+                teacherSpecialities.add(spe.getSpeName());
+            }
+        }
         StringBuilder teacherSpeString = new StringBuilder();
         for (int i = 0; i < teacherSpecialities.size(); i++) {
             teacherSpeString.append(teacherSpecialities.get(i));
@@ -120,35 +127,35 @@ public class TeacherService {
         }
         return teacherSpeString.toString();
     }
-    public List<SpecialityVO> getAllSpeciality(){
-        return speDAO.getAll();
+    public List<Speciality> getAllSpeciality(){
+        return speDAO.selectAll();
     }
-    public TeaSpecialityVO addTeaSpeciality(Integer teaID, Integer speID) throws RuntimeException{
-        TeaSpecialityVO teaSpecialityVO = new TeaSpecialityVO();
-        teaSpecialityVO.setTeaId(teaID);
-        teaSpecialityVO.setSpeId(speID);
-        teaSpeDAO.insert(teaSpecialityVO);
-        return teaSpecialityVO;
+    public TeaSpeciality addTeaSpeciality(Integer teaID, Integer speID) throws RuntimeException{
+        TeaSpeciality teaSpeciality = new TeaSpeciality();
+        teaSpeciality.setTeaId(teaID);
+        teaSpeciality.setSpeId(speID);
+        teaSpeDAO.insert(teaSpeciality);
+        return teaSpeciality;
     }
-    public TeaSpecialityVO updateTeaSpeciality(Integer teaID, Integer speID){
-        TeaSpecialityVO teaSpecialityVO = new TeaSpecialityVO();
-        teaSpecialityVO.setTeaId(teaID);
-        teaSpecialityVO.setSpeId(speID);
-        teaSpeDAO.update(teaSpecialityVO);
-        return teaSpecialityVO;
+    public TeaSpeciality updateTeaSpeciality(Integer teaID, Integer speID){
+        TeaSpeciality teaSpeciality = new TeaSpeciality();
+        teaSpeciality.setTeaId(teaID);
+        teaSpeciality.setSpeId(speID);
+        teaSpeDAO.update(teaSpeciality);
+        return teaSpeciality;
     }
     public void delTeaSpeciality(Integer teaID) {
-        teaSpeDAO.delete(teaID);
+        teaSpeDAO.deleteById(teaID);
     }
     public List<String> getOneTeaSpecialityStringList(Integer teaID){
-        List<Integer> speIdArray = teaSpeDAO.findByTeaId(teaID);
+        List<Integer> speIdArray = teaSpeDAO.selectByTeaId(teaID);
         List<String> speNameArray = new ArrayList<String>();
         for(int i = 0; i < speIdArray.size(); i++) {
-            speNameArray.add(speDAO.findBySpeId(speIdArray.get(i)));
+            speNameArray.add(speDAO.selectById(speIdArray.get(i)).getSpeName());
         }
         return speNameArray;
     }
-    public List<TeaSpecialityVO> getAllTeaSpeciality(){
-        return teaSpeDAO.getAll();
+    public List<TeaSpeciality> getAllTeaSpeciality(){
+        return teaSpeDAO.selectAll();
     }
 }

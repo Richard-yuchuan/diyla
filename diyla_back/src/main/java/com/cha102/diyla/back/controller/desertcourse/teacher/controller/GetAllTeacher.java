@@ -1,5 +1,6 @@
 package com.cha102.diyla.back.controller.desertcourse.teacher.controller;
 
+import com.cha102.diyla.sweetclass.teaModel.Teacher;
 import com.cha102.diyla.sweetclass.teaModel.TeacherService;
 import com.cha102.diyla.sweetclass.teaModel.TeacherVO;
 import org.json.JSONArray;
@@ -25,8 +26,8 @@ public class GetAllTeacher extends HttpServlet {
         TeacherService teacherService = new TeacherService();
         JSONArray jsonArray = new JSONArray();
         //取得teacherList
-        List<TeacherVO> teacherVOList = teacherService.getAllTeacher();
-        for (TeacherVO teachers : teacherVOList) {
+        List<Teacher> teacherList = teacherService.getAllTeacher();
+        for (Teacher teachers : teacherList) {
             //將各個Teacher相關資料放入JsonObject中
                 JSONObject jsonTeacher = new JSONObject();
                 jsonTeacher.put("teacherId", teachers.getTeaId());

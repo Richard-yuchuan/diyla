@@ -7,17 +7,18 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TeacherServiceImpl implements TeacherService{
+public abstract class TeacherServiceImpl implements TeacherService{
     @PersistenceContext
     private Session session;
     @Autowired
-    private TeacherDAO teaDao;
+    private TeacherDAOImpl teaDao;
     @Autowired
-    private SpecialityDAO speDao;
+    private SpecialityDAOImpl speDao;
     @Autowired
-    private TeaSpecialityDAO teaSpeDao;
+    private TeaSpecialityDAOImpl teaSpeDao;
     @Override
     public int addTeacher(Teacher teacher) {
         return teaDao.insert(teacher);
@@ -107,6 +108,21 @@ public class TeacherServiceImpl implements TeacherService{
     }
     @Override
     public String getTeacherSpecialityString(Integer teaId) {
-        
+        List<Speciality> speList = speDao.selectAll();
+        List<Integer> teaSpeIDList = teaSpeDao.selectByTeaId(teaId);
+        List<String> teacherSpecialities = new ArrayList<>();
+        for(Speciality spe: speList) {
+            if(teaSpeIDList.contains(spe.getSpeId())) {
+                teacherSpecialities.add(spe.getSpeName());
+            }
+        }
+        StringBuilder teacherSpeString = new StringBuilder();
+        for (int i = 0; i < teacherSpecialities.size(); i++) {
+            teacherSpeString.append(teacherSpecialities.get(i));
+            if (i < teacherSpecialities.size() - 1) {
+                teacherSpeString.append(", ");
+            }
+        }
+        return teacherSpeString.toString();
     }
 }

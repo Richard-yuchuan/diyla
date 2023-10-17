@@ -1,5 +1,6 @@
 package com.cha102.diyla.sweetclass.classModel;
 
+import com.cha102.diyla.sweetclass.teaModel.Teacher;
 import com.cha102.diyla.sweetclass.teaModel.TeacherDAO;
 import com.cha102.diyla.sweetclass.teaModel.TeacherDAOImpl;
 import com.cha102.diyla.sweetclass.teaModel.TeacherVO;
@@ -174,7 +175,7 @@ public class ClassService {
         TeacherDAO teacherDAO = new TeacherDAOImpl();
         ClassReserveDAO reserveDAO = new ClassReserveDAOImpl();
         ClassVO course;
-        TeacherVO teacherVO = teacherDAO.findByPrimaryKey(teaId);
+        Teacher teacher = teacherDAO.selectById(teaId);
         ClassDAO classDAO = new ClassDAOImpl();
         String pattern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);

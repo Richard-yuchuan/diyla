@@ -16,7 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Repository
-@Table(name = "TEA_SPECIALITY")
+@Table(name = "tea_speciality")
 public class TeaSpeciality extends Core {
 
     private static final long serialVersionUID = 2720667267623891630L;
@@ -25,7 +25,6 @@ public class TeaSpeciality extends Core {
     private int teaId;
     @Id
     @ManyToOne
-    @Column(name = "SPE_ID")
     @JoinColumn(name = "SPE_ID")
     private int speId;
 }
