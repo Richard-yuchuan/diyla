@@ -200,36 +200,34 @@
                 $("form").submit(function(event){
                     var form = $('form')[0];
                     var formData = new FormData(form);
-                    console.log(formData);
-                    for (var pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-    }
                     event.preventDefault();
-
-            fetch("${ctxPath}/registerTeacher", {
-            method: "post",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.isSuccessful) {
-                                Swal.fire({
-                                    title: data.errorMessage,
-                                    icon: "success",
-                                    confirmButtonText: "確定"
-                                }).then(function(result){
-                                    if(result.isConfirmed) {
-                                        window.location.href = "${ctxPath}/desertcourse/listallteacher.jsp?defaultSearchValue="+ data.teacherName;
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: data.errorMessage,
-                                    icon: "error",
-                                    confirmButtonText: "確定"
-                                });
+                fetch("${ctxPath}/registerTeacher", {
+                method: "post",
+                body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.isSuccessful) {
+                        Swal.fire({
+                            title: data.errorMessage,
+                            icon: "success",
+                            confirmButtonText: "確定"
+                        }).then(function(result){
+                            if(result.isConfirmed) {
+                                window.location.href = "${ctxPath}/desertcourse/listallteacher.jsp?defaultSearchValue="+ data.teacherName;
                             }
-        });
+                        });
+                        setTimeout(function() {
+                        window.location.href = "${ctxPath}/desertcourse/listallteacher.jsp?defaultSearchValue="+ data.teacherName;
+                        }, 2500);
+                    } else {
+                        Swal.fire({
+                            title: data.errorMessage,
+                            icon: "error",
+                            confirmButtonText: "確定"
+                        });
+                    }
+                });
 
                 });
                  // 清空按鈕事件處理

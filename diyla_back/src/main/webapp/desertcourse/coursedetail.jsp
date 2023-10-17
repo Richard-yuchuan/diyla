@@ -53,8 +53,10 @@
                 List<TeacherVO> teacherList = teacherService.getAllTeacher();
                 pageContext.setAttribute("teacherList", teacherList);
             } else if ("MASTER".equals(type)) {
+                try{
                 reqTeacher = teacherService.getOneTeacherByEmpId(empId);
                 reqTeacherId = reqTeacher.getTeaId();
+                } catch(Exception e) {}
             }
             pageContext.setAttribute("type", type);
             pageContext.setAttribute("reqTeaId", reqTeacherId);
@@ -306,6 +308,19 @@
                         window.location.href = "${ctxPath}/emp/empLogin.jsp";
                     }
                 });
+            } else if (reqTeaId == '' && type !== 'BACKADMIN') {
+                Swal.fire({
+                title: "您尚未註冊為師傅!",
+                icon: "error",
+                confirmButtonText: "確定"
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    window.location.href="${ctxPath}/desertcourse/registerteacher.jsp";
+                }
+            });
+            setTimeout(function() {
+                window.location.href = "${ctxPath}/desertcourse/registerteacher.jsp";
+                }, 2500);
             } else{
             //取得該課程的食材
                 var ingString = "";

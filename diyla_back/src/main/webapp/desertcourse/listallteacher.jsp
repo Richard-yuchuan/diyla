@@ -65,11 +65,13 @@
                 List<TeacherVO> teacherList = teacherService.getAllTeacher();
                 pageContext.setAttribute("teacherList", teacherList);
             } else if ("MASTER".equals(type)) {
+                try{
                 teacher = teacherService.getOneTeacherByEmpId(empId);
                 teacherId = teacher.getTeaId();
+                } catch(Exception e){}
             }
             pageContext.setAttribute("type", type);
-            pageContext.setAttribute("requestTeaId", teacherId);
+            pageContext.setAttribute("reqTeaId", teacherId);
             pageContext.setAttribute("teacherName", empName);
         } else {
             type = "NOSESSION";
@@ -115,6 +117,7 @@
             //判斷瀏覽人能對list的控制權, 回傳-1代表管理員,0代表該後台員工無法瀏覽, 1~n代表回回傳師傅id
             var type = "${type}";
             var getTeaCode = 0;
+            var teacherId = "${reqTeaId}";
             if (type === "NOSESSION"){
                                 // 啟動定時器，3秒後導航到其他網頁
                 setTimeout(function() {
@@ -130,11 +133,24 @@
                     window.location.href = "${ctxPath}/emp/empLogin.jsp";
                 }
              });
+            } else if (teacherId === '' && type !== 'BACKADMIN'){
+                Swal.fire({
+                title: "您尚未註冊為師傅!",
+                icon: "error",
+                confirmButtonText: "確定"
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    window.location.href="${ctxPath}/desertcourse/registerteacher.jsp";
+                }
+            });
+            setTimeout(function() {
+                window.location.href = "${ctxPath}/desertcourse/registerteacher.jsp";
+                }, 2500);
             } else {
                 if (type === "BACKADMIN") {
                     getTeaCode = -1;
                 } else if (type === "MASTER") {
-                    getTeaCode = "${requestTeaId}";
+                    getTeaCode = "${reqTeaId}";
                 }
             let defaultSearchValue = "${param.defaultSearchValue}";
             let searchOptions = defaultSearchValue !== null ? { search: defaultSearchValue } : {};

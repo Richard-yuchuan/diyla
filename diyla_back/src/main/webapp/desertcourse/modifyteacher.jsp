@@ -64,8 +64,10 @@
                 List<TeacherVO> teacherList = teacherService.getAllTeacher();
                 pageContext.setAttribute("teacherList", teacherList);
             } else if ("MASTER".equals(type)) {
+                try{
                 teacher = teacherService.getOneTeacherByEmpId(empId);
                 teacherId = teacher.getTeaId();
+                } catch(Exception e){}
             }
             pageContext.setAttribute("type", type);
             pageContext.setAttribute("teacherId", teacherId);
@@ -265,6 +267,7 @@
         $(document).ready(function () {
             //檢查是否登入
             var type = "${type}";
+            var teacherId = "${teacherId}";
             
             if (type === "NOSESSION") {
                 // 啟動定時器，3秒後導航到其他網頁
@@ -281,6 +284,20 @@
                     window.location.href = "${ctxPath}/emp/empLogin.jsp";
                 }
              });
+            }
+            if (teacherId == '' && type !== 'BACKADMIN') {
+                Swal.fire({
+                title: "您尚未註冊為師傅!",
+                icon: "error",
+                confirmButtonText: "確定"
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    window.location.href="${ctxPath}/desertcourse/registerteacher.jsp";
+                }
+            });
+            setTimeout(function() {
+                window.location.href = "${ctxPath}/desertcourse/registerteacher.jsp";
+                }, 2500);
             }
                  //先做是否有修改的權利的確認
             if (type !== 'BACKADMIN' && type !== 'MASTER') {

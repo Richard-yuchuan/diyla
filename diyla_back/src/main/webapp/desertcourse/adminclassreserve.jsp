@@ -70,8 +70,10 @@
                 List<TeacherVO> teacherList = teacherService.getAllTeacher();
                 pageContext.setAttribute("teacherList", teacherList);
             } else if ("MASTER".equals(type)) {
+                try{
                 teacher = teacherService.getOneTeacherByEmpId(empId);
                 teacherId = teacher.getTeaId();
+                } catch(Exception e) {}
             }
             pageContext.setAttribute("type", type);
             pageContext.setAttribute("reqTeaId", teacherId);
@@ -115,6 +117,7 @@
             <script>
                 $(document).ready(function () {
                     var type = "${type}";
+                    var teacherId = "${reqTeaId}";
                     if (type === "NOSESSION") {
                     Swal.fire({
                     title: "您沒有登入!",
@@ -128,7 +131,20 @@
             setTimeout(function() {
                 window.location.href = "${ctxPath}/emp/empLogin.jsp";
                 }, 2500);
-                    } else{
+                    } else if(teacherId === '' && type !== 'BACKADMIN') {
+                        Swal.fire({
+                        title: "您尚未註冊為師傅!",
+                        icon: "error",
+                        confirmButtonText: "確定"
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+                            window.location.href="${ctxPath}/desertcourse/registerteacher.jsp";
+                        }
+                    });
+                    setTimeout(function() {
+                        window.location.href = "${ctxPath}/desertcourse/registerteacher.jsp";
+                        }, 2500);
+                    } else {
                     var Id = null;
                     //若type為ADMIN,則將teaId設-1,可瀏覽全部課程, MASTER則為後台教師,則將teaId設為目前教師Id
                     if (type === "BACKADMIN") {
