@@ -13,40 +13,40 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class TeacherDAOImpl implements TeacherDAO {
-    @PersistenceContext
-    private Session session;
-
+    private final TeacherJPAREPO teacherJPAREPO;
+    public TeacherDAOImpl(TeacherJPAREPO teacherJPAREPO) {
+        this.teacherJPAREPO = teacherJPAREPO;
+    }
     @Override
     public int insert(Teacher teacher) {
-        session.persist(teacher);
+        teacherJPAREPO.save(teacher);
         return 1;
     }
 
     @Override
     public int update(Teacher teacher) {
-        session.update(teacher);
+        teacherJPAREPO.save(teacher);
         return 1;
     }
 
     @Override
     public int deleteById(Integer teaId) {
-        Teacher teacher = session.load(Teacher.class, teaId);
-        session.remove(teacher);
+        teacherJPAREPO.deleteById(teaId);
         return 1;
     }
 
     @Override
     public Teacher selectById(Integer teaId) {
-        return session.get(Teacher.class, teaId);
+        return teacherJPAREPO.findById(teaId).orElse(null);
     }
 
     @Override
     public List<Teacher> selectAll() {
         final String hql = "FROM TEACHER ORDER BY TEA_ID";
-        return session.createQuery(hql, Teacher.class).getResultList();
+        return teacherJPAREPO.findAll();
     }
+    @Override
     public Teacher findTeaByEmpID(Integer empId) {
-        final String hql = "FROM TEACHER WHERE empId = :empId";
-        return session.createQuery(hql,Teacher.class).setParameter("empId", empId).uniqueResult();
+        return teacherJPAREPO.findByEmpId(empId);
     }
 }

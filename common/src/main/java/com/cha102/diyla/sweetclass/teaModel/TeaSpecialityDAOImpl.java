@@ -13,36 +13,36 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class TeaSpecialityDAOImpl implements TeaSpecialityDAO {
-    @PersistenceContext
-    private Session session;
+    private final TeaSpecialityJPAREPO teaSpecialityJPAREPO;
+    public TeaSpecialityDAOImpl(TeaSpecialityJPAREPO teaSpecialityJPAREPO) {
+        this.teaSpecialityJPAREPO = teaSpecialityJPAREPO;
+    }
     @Override
     public int insert(TeaSpeciality teaSpeciality){
-        session.persist(teaSpeciality);
+        teaSpecialityJPAREPO.save(teaSpeciality);
         return 1;
     }
 
     @Override
     public int update(TeaSpeciality teaSpeciality) {
-        session.update(teaSpeciality);
+        teaSpecialityJPAREPO.save(teaSpeciality);
         return 1;
     }
 
     @Override
     public int deleteById(Integer teaId) {
-        TeaSpeciality teaSpeciality = session.load(TeaSpeciality.class, teaId);
+        teaSpecialityJPAREPO.deleteById(teaId);
         return 1;
     }
 
 
     @Override
     public TeaSpeciality selectById(Integer teaId) {
-        final String hql = "FROM TeaSpeciality WHERE tea_Id = :teaId";
-        return session.createQuery(hql, TeaSpeciality.class).setParameter("teaId", teaId).uniqueResult();
+        return teaSpecialityJPAREPO.findById(teaId).orElse(null);
     }
     @Override
     public List<Integer> selectByTeaId(Integer teaId) {
-        final String hql = "SELECT tesp.speciality.speName FROM TeaSpeciality tesp WHERE tesp.tea.teaId = :teaId";
-        List<TeaSpeciality> resultList = session.createQuery(hql, TeaSpeciality.class).setParameter("teaId", teaId).getResultList();
+        List<TeaSpeciality> resultList = teaSpecialityJPAREPO.findByTea_TeaId(teaId);
         List<Integer> teaSpeIdList = new ArrayList<>();
         for(TeaSpeciality teaSpeciality : resultList) {
             teaSpeIdList.add(teaSpeciality.getSpeId());
@@ -51,7 +51,6 @@ public class TeaSpecialityDAOImpl implements TeaSpecialityDAO {
     }
     @Override
     public List<TeaSpeciality> selectAll() {
-        final String hql = "FROM TeaSpeciality ORDER BY TEA_ID";
-        return session.createQuery(hql, TeaSpeciality.class).getResultList();
+        return teaSpecialityJPAREPO.findAll();
     }
 }

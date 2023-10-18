@@ -1,21 +1,23 @@
 package com.cha102.diyla.sweetclass.classModel;
 
-import com.cha102.diyla.sweetclass.teaModel.Teacher;
-import com.cha102.diyla.sweetclass.teaModel.TeacherDAO;
-import com.cha102.diyla.sweetclass.teaModel.TeacherDAOImpl;
-import com.cha102.diyla.sweetclass.teaModel.TeacherVO;
+import com.cha102.diyla.sweetclass.teaModel.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
+@Service
 public class ClassService {
+
     private ClassDAO claDAO;
     private ClassReserveDAO resDAO;
     private ClassINGDAO ingDAO;
+    @Autowired
+    private TeacherDAOImpl teacherDAO;
     public  ClassService(){
         claDAO = new ClassDAOImpl();
         resDAO = new ClassReserveDAOImpl();
@@ -172,7 +174,6 @@ public class ClassService {
         ClassService classService = new ClassService();
         List<ClassReserveVO> courseList = classService.getAllReserve();
         JSONArray jsonArray = new JSONArray();
-        TeacherDAO teacherDAO = new TeacherDAOImpl();
         ClassReserveDAO reserveDAO = new ClassReserveDAOImpl();
         ClassVO course;
         Teacher teacher = teacherDAO.selectById(teaId);

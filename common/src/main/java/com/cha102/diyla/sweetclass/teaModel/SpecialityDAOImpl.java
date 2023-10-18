@@ -13,40 +13,40 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class SpecialityDAOImpl implements SpecialityDAO {
-    @PersistenceContext
-    private Session session;
+
+    private final SpecialityJPAREPO specialityJPAREPO;
+    public SpecialityDAOImpl(SpecialityJPAREPO specialityJPAREPO) {
+        this.specialityJPAREPO = specialityJPAREPO;
+    }
 
     @Override
     public int insert(Speciality speciality) {
-        session.persist(speciality);
+        specialityJPAREPO.save(speciality);
         return 1;
     }
 
     @Override
     public int update(Speciality speciality) {
-        session.update(speciality);
+        specialityJPAREPO.save(speciality);
         return 1;
     }
 
     @Override
     public int deleteById(Integer speId) {
-        Speciality speciality = session.load(Speciality.class, speId);
-        session.remove(speciality);
+        specialityJPAREPO.deleteById(speId);
         return 1;
     }
 
     @Override
     public Speciality selectById(Integer speId) {
-        return session.get(Speciality.class, speId);
+        return specialityJPAREPO.findById(speId).orElse(null);
     }
     @Override
     public Speciality findBySpeName(String speName){
-        final String hql = "FROM Speciality WHERE spe_Name = :speName";
-        return session.createQuery(hql, Speciality.class).setParameter("speName", speName).uniqueResult();
+        return specialityJPAREPO.findBySpeName(speName);
     }
     @Override
     public List<Speciality> selectAll() {
-        final String hql = "FROM Speciality ORDER BY spe_id";
-        return session.createQuery(hql, Speciality.class).getResultList();
+        return specialityJPAREPO.findAll();
     }
 }
