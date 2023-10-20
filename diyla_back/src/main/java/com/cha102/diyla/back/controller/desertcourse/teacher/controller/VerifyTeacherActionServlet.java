@@ -1,5 +1,6 @@
 package com.cha102.diyla.back.controller.desertcourse.teacher.controller;
 
+import com.cha102.diyla.sweetclass.teaModel.Teacher;
 import com.cha102.diyla.sweetclass.teaModel.TeacherService;
 import com.cha102.diyla.sweetclass.teaModel.TeacherVO;
 import org.json.JSONObject;
@@ -55,7 +56,7 @@ public class VerifyTeacherActionServlet extends HttpServlet {
         //取得請求修改teacherId以及目前請求者的empId
         Integer teacherId = Integer.parseInt(req.getParameter("teacherId"));
         TeacherService teacherService = new TeacherService();
-        TeacherVO reqTeacher = teacherService.getOneTeacher(teacherId);
+        Teacher reqTeacher = teacherService.getOneTeacher(teacherId);
         Integer reqEmpId = reqTeacher.getEmpId();
         //比較目前請求者的empId和teacher的empId是否為相同
         //取得使用者打算做甚麼action

@@ -1,4 +1,5 @@
 package com.cha102.diyla.sweetclass.teaModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -6,74 +7,74 @@ import java.util.*;
 public class TeacherService {
     private SpecialityDAO speDAO;
     private TeaSpecialityDAO teaSpeDAO;
-    private TeacherDAO teaDAO;
+    @Autowired
+    private TeacherSpringDAOImpl teaDAO;
 
     public TeacherService() {
-        teaDAO = new TeacherDAOImpl();
         speDAO = new SpecialityDAOImpl();
         teaSpeDAO = new TeaSpecialityDAOImpl();
     }
 
     public int addTeacher(Integer empID, String teaName, Integer teaGender, String teaPhone,
                                 String teaIntro, byte[] teaPic, String teaEmail, int teaStatus){
-        TeacherVO teacherVO = new TeacherVO();
-        teacherVO.setEmpId(empID);
-        teacherVO.setTeaName(teaName);
-        teacherVO.setTeaGender(teaGender);
-        teacherVO.setTeaPhone(teaPhone);
-        teacherVO.setTeaIntro(teaIntro);
-        teacherVO.setTeaPic(teaPic);
-        teacherVO.setTeaEmail(teaEmail);
-        teacherVO.setTeaStatus(teaStatus);
-        int pk = teaDAO.insert(teacherVO);
+        Teacher teacher = new Teacher();
+        teacher.setEmpId(empID);
+        teacher.setTeaName(teaName);
+        teacher.setTeaGender(teaGender);
+        teacher.setTeaPhone(teaPhone);
+        teacher.setTeaIntro(teaIntro);
+        teacher.setTeaPic(teaPic);
+        teacher.setTeaEmail(teaEmail);
+        teacher.setTeaStatus(teaStatus);
+        int pk = teaDAO.insert(teacher);
 
         return pk;
     }
-    public TeacherVO updateTeacher(Integer teaID, Integer empID, String teaName, Integer teaGender, String teaPhone,
+    public Teacher updateTeacher(Integer teaID, Integer empID, String teaName, Integer teaGender, String teaPhone,
                                    String teaIntro, byte[] teaPic, String teaEmail, int teaStatus){
-        TeacherVO teacherVO = new TeacherVO();
-        teacherVO.setTeaId(teaID);
-        teacherVO.setEmpId(empID);
-        teacherVO.setTeaName(teaName);
-        teacherVO.setTeaGender(teaGender);
-        teacherVO.setTeaPhone(teaPhone);
-        teacherVO.setTeaIntro(teaIntro);
-        teacherVO.setTeaPic(teaPic);
-        teacherVO.setTeaEmail(teaEmail);
-        teacherVO.setTeaStatus(teaStatus);
-        teaDAO.update(teacherVO);
+        Teacher teacher = new Teacher();
+        teacher.setTeaId(teaID);
+        teacher.setEmpId(empID);
+        teacher.setTeaName(teaName);
+        teacher.setTeaGender(teaGender);
+        teacher.setTeaPhone(teaPhone);
+        teacher.setTeaIntro(teaIntro);
+        teacher.setTeaPic(teaPic);
+        teacher.setTeaEmail(teaEmail);
+        teacher.setTeaStatus(teaStatus);
+        teaDAO.update(teacher);
 
-        return teacherVO;
+        return teacher;
     }
 
     public void delTeacher(Integer teaID){
 
-        teaDAO.delete(teaID);
+        teaDAO.deleteById(teaID);
     }
-    public TeacherVO getOneTeacher(Integer teaID) {
+    public Teacher getOneTeacher(Integer teaID) {
 
-        return teaDAO.findByPrimaryKey(teaID);
+        return teaDAO.selectById(teaID);
     }
-    public TeacherVO getOneTeacherByEmpId (Integer empID) {
+    public Teacher getOneTeacherByEmpId (Integer empID) {
         return teaDAO.findTeaByEmpID(empID);
     }
     public boolean verifyTeacherId(Integer teaID) {
         try{
-            teaDAO.findByPrimaryKey(teaID);
+            teaDAO.selectById(teaID);
             return true;
         } catch (RuntimeException re) {
             return false;
         }
     }
 
-    public List<TeacherVO> getAllTeacher(){
+    public List<Teacher> getAllTeacher(){
 
-        return teaDAO.getAll();
+        return teaDAO.selectAll();
     }
     public boolean isEmpAlreadyTeacher(Integer empId) {
-        List<TeacherVO> allTeacher = teaDAO.getAll();
+        List<Teacher> allTeacher = teaDAO.selectAll();
         boolean result = false;
-        for(TeacherVO teacher: allTeacher) {
+        for(Teacher teacher: allTeacher) {
             if (empId == teacher.getEmpId()) {
                 result = true;
             }
@@ -81,10 +82,10 @@ public class TeacherService {
         return result;
     }
     public boolean updateTeaStatus(Integer teaId, Integer status){
-        TeacherVO teacherVO = teaDAO.findByPrimaryKey(teaId);
-        teacherVO.setTeaStatus(status);
+        Teacher teacher = teaDAO.selectById(teaId);
+        teacher.setTeaStatus(status);
         try {
-            teaDAO.update(teacherVO);
+            teaDAO.update(teacher);
             return true;
         } catch (RuntimeException re) {
             re.printStackTrace();
